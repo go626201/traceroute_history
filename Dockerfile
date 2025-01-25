@@ -14,7 +14,7 @@ WORKDIR /traceroute_history
 COPY . .
 
 # 安装 Python 依赖（如果有的话）
-RUN pip3 install -r requirements.txt
+RUN pip3 install -r traceroute_history/requirements.txt
 
 # 设置入口点或默认命令
-ENTRYPOINT ["python3", "traceroute_history.py"]
+ENTRYPOINT ["python3", "traceroute_history/traceroute_history.py"]
