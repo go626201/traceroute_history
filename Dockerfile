@@ -1,27 +1,21 @@
-# Use a lightweight Python base image
-FROM python:3.11-slim
+# 使用一个基础镜像，例如 Ubuntu
+FROM ubuntu:latest
 
-# Set environment variables to avoid .pyc files and unbuffered logs
-ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1
-
-# Set working directory
-WORKDIR /app
-
-# Install required system dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
+# 安装必要的依赖
+RUN apt-get update && apt-get install -y \
     traceroute \
-    && rm -rf /var/lib/apt/lists/*
+    git \
+    python3 \
+    python3-pip
 
-# Copy requirements file and install Python dependencies
-COPY /traceroute_history/requirements.txt /app/
-RUN pip install --no-cache-dir -r requirements.txt
+# 克隆 traceroute_history 仓库
+RUN git clone https://github.com/你的用户名/traceroute_history.git /traceroute_history
 
-# Copy the rest of the application code
-COPY . /app/
+# 设置工作目录
+WORKDIR /traceroute_history
 
-# Expose the port used by the web server (if applicable)
-EXPOSE 8000
+# 安装 Python 依赖（如果有的话）
+RUN pip3 install -r requirements.txt
 
-# Default command to run the application
-CMD ["python", "traceroute_history.py"]
+# 设置入口点或默认命令
+ENTRYPOINT ["python3", "traceroute_history.py"]
